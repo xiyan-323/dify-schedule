@@ -3,13 +3,13 @@ import env from '../utils/env.js'
 import Notify from "../utils/notify.js";
 
 // === 新增：日期判断逻辑 ===
-function shouldRunToday() {
-  const startDate = new Date('2025-10-28'); // 可自行设置一个开始基准日
-  const today = new Date();
-  const diffDays = Math.floor((today - startDate) / (1000 * 60 * 60 * 24)) + 1;
-  // 每运行10天，休息1天（第11天跳过）
-  return diffDays % 11 !== 0;
-}
+// function shouldRunToday() {
+//   const startDate = new Date('2025-10-28'); // 可自行设置一个开始基准日
+//   const today = new Date();
+//   const diffDays = Math.floor((today - startDate) / (1000 * 60 * 60 * 24)) + 1;
+//   // 每运行10天，休息1天（第11天跳过）
+//   return diffDays % 11 !== 0;
+// }
 // ==========================
 
 class Task {
@@ -56,15 +56,15 @@ class WorkflowTask extends Task {
 
 async function run(args) {
      // === 新增：执行前判断 ===
-  if (!shouldRunToday()) {
-    console.log("今天是暂停日（第11天），跳过执行。");
-    Notify.pushMessage({
-      title: "Dify工作流定时助手",
-      content: "今天是第11天，暂停执行。",
-      msgtype: "text"
-    });
-    return;
-  }
+  // if (!shouldRunToday()) {
+  //   console.log("今天是暂停日（第11天），跳过执行。");
+  //   Notify.pushMessage({
+  //     title: "Dify工作流定时助手",
+  //     content: "今天是第11天，暂停执行。",
+  //     msgtype: "text"
+  //   });
+  //   return;
+  // }
   // ======================
     const tokens = env.DIFY_TOKENS.split(';');
     let messageList = [];
