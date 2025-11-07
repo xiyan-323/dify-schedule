@@ -46,7 +46,44 @@ class WorkflowTask extends Task {
       this.workfolwName = info.data?.name || '';
       console.log(`Dify工作流【${info.data.name}】开始执行...`)
       const response =  await workflow.getWorkflowResult(inputs, user,true)
-      this.result = response.text || ''
+      // this.result = response.text || ''
+            // ===== 修复返回内容格式 start =====
+
+// 原始字符串
+let raw = response.text || "";
+
+// 1. 去掉所有星号 ***（常见于 log 高亮）
+raw = raw.replace(/\*+/g, "");
+
+// 2. 去掉多余的转义符号 \" 和 \\
+//   转换 \" → "
+//   转换 \\ → \
+raw = raw.replace(/\\+"/g, '"').replace(/\\\\/g, '\\');
+
+// 3. 如果包含 JSON 片段，尝试自动提取 no 和 msg
+let no = null;
+let msg = null;
+
+try {
+  // 尝试定位含 no/msg 的 JSON 结构
+  const match = raw.match(/"no"\s*:\s*"?(?<no>\d+)"?\s*,\s*"msg"\s*:\s*"?(?<msg>[^",}]+)/);
+
+  if (match && match.groups) {
+    no = match.groups.no;
+    msg = match.groups.msg;
+  }
+} catch (e) {}
+
+// 4. 最终输出格式
+if (no !== null && msg !== null) {
+  this.result = `今日状态：no=${no}, msg=${msg}`;
+} else {
+  // 无法解析时显示清洗后的原始内容（确保不为空）
+  this.result = raw.trim() || "⚠️ 无法解析工作流返回内容（内容为空或格式异常）";
+}
+
+// ===== 修复返回内容格式 end =====
+
     }
 
     toString() {
