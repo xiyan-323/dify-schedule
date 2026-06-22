@@ -29,5 +29,5 @@ jobs:
       - uses: actions/setup-node@v3
       - name: Run Project
         run: |
-          yarn
-          yarn workflowDify
+          npm
+          npm workflowDify
