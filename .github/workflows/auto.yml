@@ -29,5 +29,5 @@ jobs:
       - uses: actions/setup-node@v3
       - name: Run Project
         run: |
-          npm
+          npm 
           npm workflowDify
